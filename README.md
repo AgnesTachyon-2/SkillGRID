@@ -32,6 +32,10 @@ skillgrid/
 ├── utils/
 │   ├── chainMatcher.js          # The multi-node chain-matching algorithm
 │   └── meetingLink.js           # Fake Zoom/Meet link generator (sandbox)
+├── sql/
+│   ├── schema.mysql.sql          # MySQL/MariaDB localhost schema
+│   ├── seed.mysql.sql            # MySQL/MariaDB demo accounts and skills
+│   └── README.md                 # phpMyAdmin and command-line import steps
 ├── public/                     # Frontend: HTML pages + css/ + js/
 ├── .env.example
 ├── .gitignore
@@ -87,6 +91,14 @@ npm test
 The SQLite dependency includes native code. On Windows, use a supported Node.js
 LTS release and ensure Python plus the Visual C++ build tools are available if
 npm needs to compile `better-sqlite3` locally.
+
+## MySQL/MariaDB localhost import
+
+The `sql/` folder contains importable MySQL/MariaDB schema and demo seed files
+for phpMyAdmin, XAMPP, WAMP, Laragon, or the MySQL command line. See
+`sql/README.md` for the exact steps and demo credentials. The current Node.js
+runtime still uses SQLite; importing the SQL files does not switch the runtime
+database automatically.
 
 ## How the proposal's scope maps to this build
 
