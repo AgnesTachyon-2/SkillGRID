@@ -30,6 +30,12 @@ const registerForm = document.getElementById('register-form');
 if (registerForm) {
   registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const consent = registerForm.querySelector('[name="consent"]');
+    if (consent && !consent.checked) {
+      document.getElementById('error').textContent = 'Please accept the Terms of Service and Privacy Policy.';
+      consent.focus();
+      return;
+    }
     const formData = new FormData(registerForm);
     const body = Object.fromEntries(formData.entries());
     const res = await fetch('/api/auth/register', {

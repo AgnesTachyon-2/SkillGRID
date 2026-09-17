@@ -2,9 +2,12 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 exports.register = (req, res) => {
-  const { name, email, password, mode, institution } = req.body;
+  const { name, email, password, mode, institution, consent } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Name, email, and password are required' });
+  }
+  if (consent !== 'on' && consent !== true) {
+    return res.status(400).json({ error: 'You must accept the Terms of Service and Privacy Policy' });
   }
   if (mode === 'institutional' && !institution) {
     return res.status(400).json({ error: 'Institution is required for institutional mode' });
