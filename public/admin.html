@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — SkillGRID</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand"><a href="/" style="color:inherit">Skill<span>GRID</span></a></div>
+  <nav id="main-nav"></nav>
+</header>
+<main class="wrap">
+  <h2>Admin dashboard</h2>
+
+  <div class="section-title"><h3>Marketplace analytics</h3></div>
+  <div class="grid" id="analytics-grid"></div>
+
+  <div class="section-title"><h3>Token valuation &amp; commission</h3></div>
+  <form id="config-form" class="row" style="max-width:600px">
+    <div>
+      <label>Token valuation</label>
+      <input type="number" id="token-valuation" step="0.01">
+    </div>
+    <div>
+      <label>Platform commission (%)</label>
+      <input type="number" id="commission-pct" step="0.1">
+    </div>
+    <button class="btn small" type="submit" style="align-self:flex-end">Save</button>
+  </form>
+
+  <div class="section-title"><h3>Flagged content / reports</h3></div>
+  <table id="reports-table">
+    <thead><tr><th>Reporter</th><th>Reported</th><th>Reason</th><th>Status</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table>
+</main>
+<script src="/js/nav.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>

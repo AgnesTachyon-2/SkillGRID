@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — SkillGRID</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand"><a href="/" style="color:inherit">Skill<span>GRID</span></a></div>
+  <nav id="main-nav"></nav>
+</header>
+<main class="wrap">
+  <div class="auth-box">
+    <h2>Create an account</h2>
+    <form id="register-form">
+      <label>Full name</label>
+      <input type="text" name="name" required>
+      <label>Email</label>
+      <input type="email" name="email" required>
+      <label>Password</label>
+      <input type="password" name="password" required minlength="6">
+      <label>Account mode</label>
+      <select name="mode" id="mode-select">
+        <option value="public">Public P2P (paid sessions)</option>
+        <option value="institutional">Institutional (school token economy)</option>
+      </select>
+      <div id="institution-field" style="display:none">
+        <label>Institution name</label>
+        <input type="text" name="institution">
+      </div>
+      <div class="error-msg" id="error"></div>
+      <button class="btn" type="submit">Create account</button>
+    </form>
+    <p class="muted">Already have an account? <a href="/login">Log in</a></p>
+  </div>
+</main>
+<script src="/js/nav.js"></script>
+<script src="/js/auth.js"></script>
+<script>initNav();</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — SkillGRID</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand"><a href="/" style="color:inherit">Skill<span>GRID</span></a></div>
+  <nav id="main-nav"></nav>
+</header>
+<main class="wrap">
+  <h2 id="welcome"></h2>
+  <span class="badge" id="mode-badge"></span>
+  <span class="badge" id="verified-badge"></span>
+
+  <div class="wallet-balances">
+    <div class="balance">
+      <div class="muted">Token balance</div>
+      <div class="amount" id="token-balance">0</div>
+    </div>
+    <div class="balance">
+      <div class="muted">Fiat balance</div>
+      <div class="amount" id="fiat-balance">₱0.00</div>
+    </div>
+    <div class="balance">
+      <div class="muted">Average rating</div>
+      <div class="amount" id="avg-rating">—</div>
+    </div>
+  </div>
+
+  <div class="section-title"><h3>Edit profile &amp; skills</h3></div>
+  <form id="profile-form" class="wide">
+    <div class="row">
+      <div>
+        <label>Name</label>
+        <input type="text" name="name" id="name-input">
+      </div>
+      <div>
+        <label>Mode</label>
+        <select name="mode" id="mode-input">
+          <option value="public">Public P2P</option>
+          <option value="institutional">Institutional</option>
+        </select>
+      </div>
+      <div>
+        <label>Institution</label>
+        <input type="text" name="institution" id="institution-input">
+      </div>
+    </div>
+
+    <label>Skills you can teach (comma-separated, add hourly rate after a colon for public mode e.g. "Guitar:15")</label>
+    <input type="text" id="offered-input" placeholder="Guitar:15, Photography">
+
+    <label>Skills you want to learn (comma-separated)</label>
+    <input type="text" id="wanted-input" placeholder="Video Editing, UI Design">
+
+    <div class="success-msg" id="save-msg"></div>
+    <button class="btn" type="submit">Save profile</button>
+  </form>
+
+  <div class="section-title"><h3>Recent transactions</h3></div>
+  <table id="tx-table">
+    <thead><tr><th>Date</th><th>Ledger</th><th>Amount</th><th>Description</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</main>
+<script src="/js/nav.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

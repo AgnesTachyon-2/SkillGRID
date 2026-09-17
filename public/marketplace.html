@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace — SkillGRID</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand"><a href="/" style="color:inherit">Skill<span>GRID</span></a></div>
+  <nav id="main-nav"></nav>
+</header>
+<main class="wrap">
+  <h2>Marketplace</h2>
+  <p class="muted">Search for people teaching a skill you want. Propose a direct swap, or run the
+  chain-matching engine to find multi-person fulfillment loops.</p>
+
+  <form id="search-form" class="row" style="max-width:600px">
+    <input type="text" id="skill-input" placeholder="Search skill (e.g. Guitar)">
+    <select id="mode-filter">
+      <option value="">All modes</option>
+      <option value="institutional">Institutional</option>
+      <option value="public">Public</option>
+    </select>
+    <button class="btn small" type="submit">Search</button>
+  </form>
+
+  <button class="btn secondary small" id="chain-search-btn" style="margin-top:16px">Run chain-matching engine</button>
+  <span class="success-msg" id="chain-result"></span>
+
+  <div class="grid" id="results"></div>
+</main>
+
+<div id="propose-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center;">
+  <div class="card" style="max-width:420px; width:90%;">
+    <h3>Propose a direct swap</h3>
+    <form id="propose-form">
+      <input type="hidden" id="target-user-id">
+      <label>Skill you'll teach them</label>
+      <select id="my-teach-skill"></select>
+      <label>Skill they'll teach you</label>
+      <select id="their-teach-skill"></select>
+      <div class="error-msg" id="propose-error"></div>
+      <div class="row">
+        <button class="btn" type="submit">Send proposal</button>
+        <button class="btn secondary" type="button" id="cancel-propose">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/nav.js"></script>
+<script src="/js/marketplace.js"></script>
+</body>
+</html>
