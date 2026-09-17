@@ -3,7 +3,7 @@ const Database = require('better-sqlite3');
 const fs = require('fs');
 const path = require('path');
 
-const dbPath = process.env.DB_PATH || './data/skillgrid.db';
+const dbPath = process.env.DB_PATH || (process.env.VERCEL ? '/tmp/skillgrid.db' : './data/skillgrid.db');
 const dir = path.dirname(dbPath);
 if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 

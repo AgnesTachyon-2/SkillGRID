@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 
 if (isProduction && !process.env.SESSION_SECRET) {
-  throw new Error('SESSION_SECRET must be set in production');
+  console.warn('SESSION_SECRET is not configured; set it in the deployment environment.');
 }
 
 app.use(express.json());
@@ -57,6 +57,10 @@ app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`SkillGRID running at http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`SkillGRID running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

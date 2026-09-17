@@ -67,6 +67,15 @@ skillgrid/
    ```
 5. Open `http://localhost:3000`
 
+## Vercel deployment
+
+This repository includes `api/index.js` and `vercel.json` for Vercel's Node
+function runtime. Add a strong `SESSION_SECRET` environment variable in the
+Vercel project settings and redeploy. Vercel's filesystem is ephemeral, so the
+current SQLite fallback uses `/tmp` for boot compatibility; user accounts and
+transactions will not persist reliably across cold starts. Use a hosted
+database before treating the deployed app as production-ready.
+
 ## Testing
 
 Run the focused integrity tests with:
