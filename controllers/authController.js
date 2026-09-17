@@ -35,9 +35,8 @@ exports.login = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  req.session.destroy(() => {
-    res.json({ success: true });
-  });
+  req.session = null;
+  res.json({ success: true });
 };
 
 exports.me = (req, res) => {

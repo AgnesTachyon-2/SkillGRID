@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const session = require('express-session');
+const crypto = require('crypto');
 const path = require('path');
 
 require('./config/db'); // initializes schema on boot
@@ -18,6 +18,8 @@ const adminRoutes = require('./routes/admin');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
+const sessionSecret = process.env.SESSION_SECRET || 'local-development-only-secret';
+const sessionCookieName = 'skillgrid_session';
 
 if (isProduction && !process.env.SESSION_SECRET) {
   console.warn('SESSION_SECRET is not configured; set it in the deployment environment.');
@@ -26,20 +28,48 @@ if (isProduction && !process.env.SESSION_SECRET) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'local-development-only-secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-    httpOnly: true,
-    sameSite: 'lax',
-    secure: isProduction
+function signSession(encodedPayload) {
+  return crypto.createHmac('sha256', sessionSecret).update(encodedPayload).digest('base64url');
+}
+
+function readSessionCookie(value) {
+  if (!value) return {};
+  const [encodedPayload, signature] = value.split('.');
+  if (!encodedPayload || !signature) return {};
+  const expected = signSession(encodedPayload);
+  const actualBuffer = Buffer.from(signature);
+  const expectedBuffer = Buffer.from(expected);
+  if (actualBuffer.length !== expectedBuffer.length || !crypto.timingSafeEqual(actualBuffer, expectedBuffer)) return {};
+  try {
+    return JSON.parse(Buffer.from(encodedPayload, 'base64url').toString('utf8'));
+  } catch {
+    return {};
   }
-  // NOTE: default MemoryStore is fine for a capstone demo but is not
-  // production-safe (leaks memory, doesn't scale past one process).
-  // Swap in connect-sqlite3 or connect-redis for a real deployment.
-}));
+}
+
+app.use((req, res, next) => {
+  const cookies = Object.fromEntries((req.headers.cookie || '').split(';').filter(Boolean).map((part) => {
+    const index = part.indexOf('=');
+    return [part.slice(0, index).trim(), decodeURIComponent(part.slice(index + 1).trim())];
+  }));
+  req.session = readSessionCookie(cookies[sessionCookieName]);
+  const originalEnd = res.end;
+  res.end = function setSessionCookie(...args) {
+    if (req.session === null) {
+      res.setHeader('Set-Cookie', `${sessionCookieName}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax${isProduction ? '; Secure' : ''}`);
+    } else if (req.session.userId) {
+      const encodedPayload = Buffer.from(JSON.stringify({ userId: req.session.userId, isAdmin: !!req.session.isAdmin })).toString('base64url');
+      res.setHeader('Set-Cookie', `${sessionCookieName}=${encodedPayload}.${signSession(encodedPayload)}; Path=/; Max-Age=604800; HttpOnly; SameSite=Lax${isProduction ? '; Secure' : ''}`);
+    }
+    return originalEnd.apply(this, args);
+  };
+  next();
+});
+
+app.use('/api', (req, res, next) => {
+  res.setHeader('Cache-Control', 'private, no-store');
+  next();
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 
